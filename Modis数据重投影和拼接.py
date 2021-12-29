@@ -9,9 +9,11 @@ input_dir = sys.argv[1]
 # output_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover/output'
 output_dir = sys.argv[2]
 # 设置输出分辨率
-res = 0.005
+# res = 0.005
+res = sys.argv[3]
 # 设置波段
-subset = "( 1 )"
+subset = sys.argv[4]
+# subset = "( 1 )"
 
 # 建立file_list
 # file_list = []
