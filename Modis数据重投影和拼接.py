@@ -1,10 +1,13 @@
 import pymodis
 import os
+import sys
 
 # 设置modis输入路径
-input_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover'
+# input_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover'
+input_dir = sys.argv[1]
 # 设置GTiff输出路径
-output_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover/output'
+# output_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover/output'
+output_dir = sys.argv[2]
 # 设置输出分辨率
 res = 0.005
 # 设置波段
