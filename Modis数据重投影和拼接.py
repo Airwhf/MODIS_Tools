@@ -3,17 +3,17 @@ import os
 import sys
 
 # 设置modis输入路径
-# input_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover'
-input_dir = sys.argv[1]
+input_dir = '/mnt/d/Chorme_Download/MCD12Q1.2020'
+# input_dir = sys.argv[1]
 # 设置GTiff输出路径
-# output_dir = '/mnt/d/2020_MODIS_AOD/ModisLandCover/output'
-output_dir = sys.argv[2]
+output_dir = '/mnt/d/Chorme_Download/MCD12Q1.2020/output'
+# output_dir = sys.argv[2]
 # 设置输出分辨率
-# res = 0.005
-res = sys.argv[3]
+res = 0.005
+# res = sys.argv[3]
 # 设置波段
-subset = sys.argv[4]
-# subset = "( 1 )"
+# subset = sys.argv[4]
+subset = "( 1 )"
 
 # 建立file_list
 # file_list = []
