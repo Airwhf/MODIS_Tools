@@ -1,30 +1,31 @@
 import pymodis
 import os
-import sys
+import glob
 
 # 设置modis输入路径
-input_dir = '/mnt/d/Chorme_Download/MCD12Q1.2020'
-# input_dir = sys.argv[1]
+input_dir = r'/mnt/d/Chorme_Download/MCD15A2H_2017_SCB'
 # 设置GTiff输出路径
-output_dir = '/mnt/d/Chorme_Download/MCD12Q1.2020/output'
-# output_dir = sys.argv[2]
+output_dir = r'/mnt/d/Chorme_Download/MCD15A2H_2017_SCB_output'
 # 设置输出分辨率
 res = 0.005
-# res = sys.argv[3]
 # 设置波段
-# subset = sys.argv[4]
-subset = "( 1 )"
+subset = "( 0 1 )"
 
-# 建立file_list
-# file_list = []
-for sname in os.listdir(input_dir):
-    if sname[-4::] == '.hdf':
-        file_name = f'{input_dir}/{sname}'
-        # file_list.append(file_name)
-        convert = pymodis.convertmodis_gdal.convertModisGDAL(file_name, f'{output_dir}/{sname[17:23]}', subset, res,
-                                                             outformat='GTiff', epsg=4326, wkt=None,
-                                                             resampl='NEAREST_NEIGHBOR', vrt=False)
-        convert.run()
+# 创建输出目录
+try:
+    os.mkdir(output_dir)
+except:
+    a = None
+
+# 查找时间标识
+file_list = glob.glob(f'{input_dir}/*.hdf')
+for file_name in file_list:
+    sname = os.path.basename(file_name)
+    # file_list.append(file_name)
+    convert = pymodis.convertmodis_gdal.convertModisGDAL(file_name, f'{output_dir}/{sname}', subset, res,
+                                                         outformat='GTiff', epsg=4326, wkt=None,
+                                                         resampl='NEAREST_NEIGHBOR', vrt=False)
+    convert.run()
 
 cmd = f'gdal_merge.py -o mergeLandCover.tif {output_dir}/*'
 print(f'若需要对批处理结果进行拼接，在Linux终端使用命令：\n'
