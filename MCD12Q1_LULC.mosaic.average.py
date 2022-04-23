@@ -86,7 +86,7 @@ def main(date_label, input_directory, output_directory):
         # for key, value in Metadata.items():
         #     print('{key}:{value}'.format(key=key, value=value))
         #  获取要转换的子数据集
-        data = datasets.GetSubDatasets()[1][0]
+        data = datasets.GetSubDatasets()[0][0]
         # print(datasets.GetSubDatasets()[1][0])
         Raster_DATA = gdal.Open(data)
         DATA_Array = Raster_DATA.ReadAsArray()[0, :, :]
@@ -109,7 +109,7 @@ def main(date_label, input_directory, output_directory):
     if os.path.exists(f'{output_directory}/mosaic') is False:
         os.mkdir(f'{output_directory}/mosaic')
     cmd = f'gdal_merge.py -o {output_directory}/mosaic/mosaic_{yyyymmdd}.tif ' \
-          f'-n -28672 -ps 0.01 0.01 ' \
+          f'-n -255 -ps 0.0083333 0.0083333 ' \
           f'-ul_lr {lon_min} {lat_max} {lon_max} {lat_min}'
 
     file_list = glob.glob(f'{output_directory}/MCD19A2.A{date_label}*.tif')
@@ -122,7 +122,7 @@ def main(date_label, input_directory, output_directory):
 
 
 if __name__ == "__main__":
-    # ********************** scale factor = 0.001 **********************
+    # ********************** scale factor = 1.0 **********************
     input_directory = '/mnt/d/MODIS'
     output_directory = '/mnt/d/MODIS/geo_band'
 
@@ -139,17 +139,17 @@ if __name__ == "__main__":
         main(date_label, input_directory, output_directory)
 
     # 计算月均值
-    avr_dir = f'{output_directory}/average'
-    if os.path.exists(avr_dir) is False:
-        os.mkdir(avr_dir)
-    year = '2015'
-    month_arr = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-    for month in month_arr:
-        file_list = glob.glob(f'{output_directory}/mosaic/mosaic_{year}{month}*.tif')
-        if len(file_list) != 0:
-            output_name = f'{avr_dir}/average_{year}{month}.tif'
-            average = calculated_average(file_list, output_name)
-            print(f'Finish the average calculated and output {output_name}')
+    # avr_dir = f'{output_directory}/average'
+    # if os.path.exists(avr_dir) is False:
+    #     os.mkdir(avr_dir)
+    # year = '2015'
+    # month_arr = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+    # for month in month_arr:
+    #     file_list = glob.glob(f'{output_directory}/mosaic/mosaic_{year}{month}*.tif')
+    #     if len(file_list) != 0:
+    #         output_name = f'{avr_dir}/average_{year}{month}.tif'
+    #         average = calculated_average(file_list, output_name)
+    #         print(f'Finish the average calculated and output {output_name}')
 
 
 

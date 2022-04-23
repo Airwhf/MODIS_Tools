@@ -1,40 +1,24 @@
-# Modis_Tools
+# MODIS工具
+用于处理各类MODIS数据的脚本合集，持续更新。
 
 ## 运行环境
+* Linux
+* python 3.7 or 3.8
+* conda install gdal
 
-Linux
+## 数据拼接和均值计算
 
-python 3.7 or 3.8
+### 气溶胶光学厚度数据处理
 
-conda install gdal
+#### [MCD19A2数据处理](MCD19A2.mosaic.average.py)
 
-pip install pymodis
+#### [MOD04_3KM数据处理](MOD04_3KM.mosaic.average.py)
 
-## MODIS数据下载地址
+#### [MOD04_L2数据处理](MOD04_L2.mosaic.average.py)
 
-https://e4ftl01.cr.usgs.gov/
+### 下垫面数据处理
 
-## 运行
-```commandline
-python Modis数据重投影和拼接.py [input_directory] [output_directory] [output_resolution] [band]
-```
-
-**input_directory**: 输入文件路径 字符串
-
-**output_directory**: 输出文件路径 字符串
-
-**output_resolution**：输出分辨率 浮点型
-
-**band**：获取波段 字符串
-
-## 部分常用数据参数设置
-
-MCD12Q1（下垫面数据类型）：
-```commandline
-output_resolution: 0.005
-
-band: "( 1 )"
-```
+#### [MCD12Q1中下垫面覆盖类型处理](MCD12Q1_LULC.mosaic.average.py)
 
 
 
