@@ -20,10 +20,7 @@ def write_band(file_name, output_name):
     # file_name = r'D:\MODIS\geo_out\MCD19A2.A2015060.h27v07.006.2018102053601.hdf.tif'
     with rasterio.open(file_name) as dataset:
         out_meta = dataset.meta
-        band1 = dataset.read(1)  # 后续更新需改为均值
-        # Data processing
-        band1 = np.where(band1 >= 248, -1.0, band1*0.1)
-
+        band1 = dataset.read(1)  
         transform = dataset.transform
         out_meta.update({"driver": "GTiff",
                          "height": band1.shape[0],
@@ -112,7 +109,7 @@ def main(date_label, input_directory, output_directory):
     if os.path.exists(f'{output_directory}/mosaic') is False:
         os.mkdir(f'{output_directory}/mosaic')
     cmd = f'gdal_merge.py -o {output_directory}/mosaic/mosaic_{date_label}.tif ' \
-          f'-n -1.0 -ps 0.0083333 0.0083333 ' \
+          f'-n 255 -ps 0.0083333 0.0083333 ' \
           f'-ul_lr {lon_min} {lat_max} {lon_max} {lat_min}'
 
     file_list = glob.glob(f'{output_directory}/MCD15A2H.A{date_label}*.tif')
