@@ -20,7 +20,7 @@ def write_band(file_name, output_name):
     # file_name = r'D:\MODIS\geo_out\MCD19A2.A2015060.h27v07.006.2018102053601.hdf.tif'
     with rasterio.open(file_name) as dataset:
         out_meta = dataset.meta
-        band1 = dataset.read(1)  
+        band1 = dataset.read(1)  # 后续更新需改为均值
         transform = dataset.transform
         out_meta.update({"driver": "GTiff",
                          "height": band1.shape[0],
@@ -68,7 +68,7 @@ def main(date_label, input_directory, output_directory):
     lat_min = 15.0
     lat_max = 60.0
 
-    # yyyymmdd = yyyyddd_to_yyyymmdd(date_label)
+    yyyymmdd = yyyyddd_to_yyyymmdd(date_label)
     #  gdal打开hdf数据集
     os.chdir(input_directory)
     file_list = glob.glob(f"*{date_label}*.hdf")
@@ -102,13 +102,14 @@ def main(date_label, input_directory, output_directory):
 
     # 拼接
     # 跳过已经拼接过的结果
-    if os.path.exists(f'{output_directory}/mosaic/mosaic_{date_label}.tif'):
-        print(f'The mosaic in {date_label} have already processed.')
+    if os.path.exists(f'{output_directory}/mosaic/mosaic_{yyyymmdd}.tif'):
+        print(f'The mosaic in {yyyymmdd} have already processed.')
         return
     # 创建拼接结果存放路径
     if os.path.exists(f'{output_directory}/mosaic') is False:
         os.mkdir(f'{output_directory}/mosaic')
-    cmd = f'gdal_merge.py -o {output_directory}/mosaic/mosaic_{date_label}.tif ' \
+
+    cmd = f'gdal_merge.py -o {output_directory}/mosaic/mosaic_{yyyymmdd}.tif ' \
           f'-n 255 -ps 0.0083333 0.0083333 ' \
           f'-ul_lr {lon_min} {lat_max} {lon_max} {lat_min}'
 
@@ -117,7 +118,7 @@ def main(date_label, input_directory, output_directory):
         cmd = f'{cmd} {file_name}'
     os.system(cmd)
     print(f'---------------------------------------------------')
-    print(f'Finish the image mosaic in {date_label}.')
+    print(f'Finish the image mosaic in {yyyymmdd}.')
     print(f'---------------------------------------------------')
 
 
