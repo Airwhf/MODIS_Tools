@@ -89,7 +89,7 @@ def main(date_label, input_directory, output_directory):
         data = datasets.GetSubDatasets()[0][0]
         # print(datasets.GetSubDatasets()[1][0])
         Raster_DATA = gdal.Open(data)
-        DATA_Array = Raster_DATA.ReadAsArray()[0, :, :]
+        DATA_Array = Raster_DATA.ReadAsArray()[:, :]
         # print(Raster_DATA)
         # print(DATA_Array.shape)
         #  保存为tif
@@ -109,10 +109,11 @@ def main(date_label, input_directory, output_directory):
     if os.path.exists(f'{output_directory}/mosaic') is False:
         os.mkdir(f'{output_directory}/mosaic')
     cmd = f'gdal_merge.py -o {output_directory}/mosaic/mosaic_{yyyymmdd}.tif ' \
-          f'-n -255 -ps 0.0083333 0.0083333 ' \
+          f'-n 255 ' \
+          f'-ps 0.0083333 0.0083333 ' \
           f'-ul_lr {lon_min} {lat_max} {lon_max} {lat_min}'
 
-    file_list = glob.glob(f'{output_directory}/MCD19A2.A{date_label}*.tif')
+    file_list = glob.glob(f'{output_directory}/MCD12Q1.A{date_label}*.tif')
     for file_name in file_list:
         cmd = f'{cmd} {file_name}'
     os.system(cmd)
@@ -123,8 +124,8 @@ def main(date_label, input_directory, output_directory):
 
 if __name__ == "__main__":
     # ********************** scale factor = 1.0 **********************
-    input_directory = '/mnt/d/MODIS'
-    output_directory = '/mnt/d/MODIS/geo_band'
+    input_directory = '/mnt/hgfs/PRD_urbanization/MCD12Q1/2000_LULC_MODIS'
+    output_directory = '/mnt/hgfs/PRD_urbanization/MCD12Q1/2000_LULC_MODIS/geo_band'
 
     if os.path.exists(output_directory) is False:
         os.mkdir(output_directory)
